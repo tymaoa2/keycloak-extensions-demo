@@ -1,4 +1,10 @@
-    public Response helloAnonymous() {
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
+public Response helloAnonymous() {
         try {
             // 創建一個HttpClient實例
             HttpClient client = HttpClient.newHttpClient();
@@ -25,3 +31,4 @@
                     .entity(Map.of("error", e.getMessage()))
                     .build();
         }
+}
