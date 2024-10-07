@@ -98,7 +98,7 @@ public class MyResourceProvider implements RealmResourceProvider {
             
             // 返回響應內容
             return Response.ok(Map.of("hello", response.body())).build();
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException | InterruptedException | NoSuchAlgorithmException | KeyManagementException e) {
             // 處理異常情況
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(Map.of("error", e.getMessage()))
