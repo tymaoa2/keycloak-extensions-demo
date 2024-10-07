@@ -151,7 +151,7 @@ public class MyResourceProvider implements RealmResourceProvider {
 
 
   // 創建一個忽略SSL驗證的HttpClient實例
-	private HttpClient createHttpClientWithInsecureSsl() throws Exception {
+	private HttpClient createHttpClientWithInsecureSsl() throws NoSuchAlgorithmException, KeyManagementException {
 		TrustManager[] trustAllCerts = new TrustManager[] {
 				new X509TrustManager() {
 					public X509Certificate[] getAcceptedIssuers() { return null; }
