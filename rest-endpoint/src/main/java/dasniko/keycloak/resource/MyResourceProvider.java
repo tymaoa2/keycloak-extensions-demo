@@ -74,7 +74,9 @@ public class MyResourceProvider implements RealmResourceProvider {
     public Response helloAnonymous() {
         try {
             // 創建一個HttpClient實例
-            HttpClient client = HttpClient.newHttpClient();
+            // HttpClient client = HttpClient.newHttpClient();
+					  // 創建一個忽略SSL驗證的HttpClient實例
+            HttpClient client = createHttpClientWithInsecureSsl();
             // 創建請求體
             String requestBody = "{\n" +
                     "  \"service_account\": \"p_rbac_operator\",\n" +
@@ -140,4 +142,22 @@ public class MyResourceProvider implements RealmResourceProvider {
 		}
 		return auth;
 	}
+
+
+  // 創建一個忽略SSL驗證的HttpClient實例
+	private HttpClient createHttpClientWithInsecureSsl() throws Exception {
+		TrustManager[] trustAllCerts = new TrustManager[] {
+				new X509TrustManager() {
+					public X509Certificate[] getAcceptedIssuers() { return null; }
+					public void checkClientTrusted(X509Certificate[] certs, String authType) { }
+					public void checkServerTrusted(X509Certificate[] certs, String authType) { }
+				}
+		};
+
+		SSLContext sslContext = SSLContext.getInstance("TLS");
+		sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
+
+		return HttpClient.newBuilder()
+						.sslContext(sslContext)
+						.build();
 }
