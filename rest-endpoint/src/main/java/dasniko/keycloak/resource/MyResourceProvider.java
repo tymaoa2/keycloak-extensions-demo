@@ -29,6 +29,8 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpRequest.BodyPublishers;
 // import java.net.http.HttpRequest.BodyHandlers;
+import java.security.NoSuchAlgorithmException;
+import java.security.KeyManagementException;
 import java.util.Map;
 
 import org.eclipse.microprofile.openapi.annotations.Operation;
