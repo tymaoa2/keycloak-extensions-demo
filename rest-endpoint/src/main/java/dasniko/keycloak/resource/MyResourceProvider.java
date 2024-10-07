@@ -166,4 +166,5 @@ public class MyResourceProvider implements RealmResourceProvider {
 		return HttpClient.newBuilder()
 						.sslContext(sslContext)
 						.build();
+	}
 }

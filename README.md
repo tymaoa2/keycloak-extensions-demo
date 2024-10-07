@@ -64,3 +64,8 @@ There's a `docker-compose.yml` definition to use with Docker Compose. No Warrant
 Build and run all the stuff with:
 
     & ./mvnw clean package -DskipTests && docker compose up
+
+
+Ubuntu22 intall Java21
+sudo apt-get update
+sudo apt install openjdk-21-jdk

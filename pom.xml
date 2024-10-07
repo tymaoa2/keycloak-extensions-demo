@@ -11,24 +11,24 @@
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>utils</module>
+		<!-- <module>utils</module>
 		<module>custom-sms-spi</module>
 		<module>event-listener</module>
 		<module>tokenmapper</module>
-		<module>flintstones-userprovider</module>
+		<module>flintstones-userprovider</module> -->
 		<module>rest-endpoint</module>
-		<module>requiredaction</module>
+		<!-- <module>requiredaction</module>
 		<module>magiclink</module>
 		<module>captcha</module>
 		<module>email</module>
 		<module>conditional-authenticators</module>
 		<module>mfa-authenticator</module>
 		<module>passkey</module>
-  	<module>initializer</module>
+  		<module>initializer</module>
 		<module>actiontoken</module>
 		<module>admin-ui</module>
 		<module>scheduled-task</module>
-		<module>various</module>
+		<module>various</module> -->
 	</modules>
 
 	<properties>
