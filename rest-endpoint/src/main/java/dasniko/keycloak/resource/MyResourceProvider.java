@@ -74,10 +74,10 @@ public class MyResourceProvider implements RealmResourceProvider {
 			)
 		)}
 	)
-	// public Response helloAnonymous(String user_nt) {
+	// public Response helloAnonymous() {
 	// 	return Response.ok(Map.of("hello", session.getContext().getRealm().getName())).build();
 	// }
-    public Response helloAnonymous() {
+    public Response helloAnonymous(String user_nt) {
         try {
             // 創建一個HttpClient實例
             // HttpClient client = HttpClient.newHttpClient();
