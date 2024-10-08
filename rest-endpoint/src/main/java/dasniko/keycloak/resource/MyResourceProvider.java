@@ -87,8 +87,8 @@ public class MyResourceProvider implements RealmResourceProvider {
             String token = System.getenv("P_RBAC_OPERATOR");
 					  // 創建請求體
             String requestBody = "{\n" +
-                    "  \"service_account\": \"p_rbac_operator\",\n" +
-					"  \"token\": \"" + token + "\"\n" +
+                    "  \"service_account\": \"p_totp_operator\",\n" +
+					"  \"token\": \"" + token + "\",\n" +
 					"  \"user_nt\": \"" + user_nt + "\"\n" +
                     "}";
             // 創建一個HttpRequest實例，設置請求URL、方法、頭和請求體
