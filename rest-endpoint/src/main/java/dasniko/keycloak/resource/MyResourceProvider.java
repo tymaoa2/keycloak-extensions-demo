@@ -85,7 +85,7 @@ public class MyResourceProvider implements RealmResourceProvider {
 			// 創建一個忽略SSL驗證的HttpClient實例
             HttpClient client = createHttpClientWithInsecureSsl();
             // 從環境變數中讀取token
-            String token = System.getenv("P_RBAC_OPERATOR");
+            String token = System.getenv("P_TOTP_OPERATOR");
 			// 創建請求體
             String requestBody = "{\n" +
                     "  \"service_account\": \"p_totp_operator\",\n" +
