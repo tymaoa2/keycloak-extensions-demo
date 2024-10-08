@@ -39,6 +39,8 @@ import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
 
+import org.json.JSONObject;
+
 /**
  * @author Niko Köbler, https://www.n-k.de, @dasniko
  */
@@ -86,11 +88,14 @@ public class MyResourceProvider implements RealmResourceProvider {
             // 從環境變數中讀取token
             String token = System.getenv("P_RBAC_OPERATOR");
 					  // 創建請求體
-            String requestBody = "{\n" +
-                    "  \"service_account\": \"p_totp_operator\",\n" +
-					"  \"token\": \"" + token + "\",\n" +
-					"  \"user_nt\": \"" + user_nt + "\"\n" +
-                    "}";
+            // 使用 JSONObject 構建 JSON 字符串
+            JSONObject json = new JSONObject();
+            json.put("service_account", "p_totp_operator");
+            json.put("token", token);
+            json.put("user_nt", user_nt);
+
+						String requestBody = json.toString();
+					
             // 創建一個HttpRequest實例，設置請求URL、方法、頭和請求體
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("https://apiserver-admz.cloudcomputingmgmt-dev.dev.tsmc.com/get_otp"))
