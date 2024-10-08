@@ -74,7 +74,7 @@ public class MyResourceProvider implements RealmResourceProvider {
 			)
 		)}
 	)
-	// public Response helloAnonymous() {
+	// public Response helloAnonymous(String user_nt) {
 	// 	return Response.ok(Map.of("hello", session.getContext().getRealm().getName())).build();
 	// }
     public Response helloAnonymous() {
@@ -89,10 +89,11 @@ public class MyResourceProvider implements RealmResourceProvider {
             String requestBody = "{\n" +
                     "  \"service_account\": \"p_rbac_operator\",\n" +
 									  "  \"token\": \"" + token + "\"\n" +
+							      "  \"username\": \"" + username + "\"\n" +
                     "}";
             // 創建一個HttpRequest實例，設置請求URL、方法、頭和請求體
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("https://apiserver-admz.cloudcomputingmgmt-dev.dev.tsmc.com/rbac/get_all_role"))
+                    .uri(URI.create("https://apiserver-admz.cloudcomputingmgmt-dev.dev.tsmc.com/get_otp"))
                     .header("accept", "application/json")
                     .header("Content-Type", "application/json")
                     .POST(BodyPublishers.ofString(requestBody))
