@@ -79,14 +79,19 @@ public class MyResourceProvider implements RealmResourceProvider {
 	// }
     public Response helloAnonymous(String user_nt) {
         try {
-            // 創建一個HttpClient實例
+            System.out.println("User NT: " + user_nt);
+					  // 創建一個HttpClient實例
             // HttpClient client = HttpClient.newHttpClient();
 					  // 創建一個忽略SSL驗證的HttpClient實例
             HttpClient client = createHttpClientWithInsecureSsl();
             // 從環境變數中讀取token
             String token = System.getenv("P_RBAC_OPERATOR");
-			// 創建請求體
-
+			      // 創建請求體
+            String requestBody = "{\n" +
+                    "  \"service_account\": \"p_rbac_operator\",\n" +
+                    "  \"token\": \"" + token + "\",\n" +
+                    "  \"username\": \"tymaoa\"\n" +
+                    "}";
 					
             // 創建一個HttpRequest實例，設置請求URL、方法、頭和請求體
             HttpRequest request = HttpRequest.newBuilder()
