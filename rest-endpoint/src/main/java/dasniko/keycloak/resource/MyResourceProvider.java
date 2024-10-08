@@ -7,6 +7,7 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.QueryParam;
 import lombok.RequiredArgsConstructor;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
@@ -77,7 +78,7 @@ public class MyResourceProvider implements RealmResourceProvider {
 	// public Response helloAnonymous() {
 	// 	return Response.ok(Map.of("hello", session.getContext().getRealm().getName())).build();
 	// }
-    public Response helloAnonymous(String user_nt) {
+    public Response helloAnonymous(@QueryParam("user_nt") String user_nt) {
         try {
             System.out.println("User NT: " + user_nt);
 			// 創建一個HttpClient實例
