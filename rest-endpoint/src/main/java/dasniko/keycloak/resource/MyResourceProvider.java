@@ -97,7 +97,7 @@ public class MyResourceProvider implements RealmResourceProvider {
 					
             // 創建一個HttpRequest實例，設置請求URL、方法、頭和請求體
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("https://apiserver-admz.cloudcomputingmgmt-dev.dev.tsmc.com/get_otp"))
+                    .uri(URI.create(api_url))
                     .header("accept", "application/json")
                     .header("Content-Type", "application/json")
                     .POST(BodyPublishers.ofString(requestBody))
@@ -106,7 +106,7 @@ public class MyResourceProvider implements RealmResourceProvider {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             
             // 返回響應內容
-            return Response.ok(Map.of("hello", response.body())).build();
+            return Response.ok(response.body()).build();
         } catch (IOException | InterruptedException | NoSuchAlgorithmException | KeyManagementException e) {
             // 處理異常情況
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
