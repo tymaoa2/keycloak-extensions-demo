@@ -87,6 +87,7 @@ public class MyResourceProvider implements RealmResourceProvider {
             HttpClient client = createHttpClientWithInsecureSsl();
             // 從環境變數中讀取token
             String token = System.getenv("P_TOTP_OPERATOR");
+			String api_url = System.getenv("OPENLDAP_API") + "/get_otp";
 			// 創建請求體
             String requestBody = "{\n" +
                     "  \"service_account\": \"p_totp_operator\",\n" +
