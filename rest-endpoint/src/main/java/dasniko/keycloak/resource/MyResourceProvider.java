@@ -8,6 +8,7 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.WebApplicationException;
 import lombok.RequiredArgsConstructor;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
@@ -15,6 +16,8 @@ import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.keycloak.models.KeycloakSession;
+import org.keycloak.models.RealmModel;
+import org.keycloak.models.UserModel;
 import org.keycloak.services.managers.AppAuthManager;
 import org.keycloak.services.managers.AuthenticationManager.AuthResult;
 import org.keycloak.services.resource.RealmResourceProvider;
@@ -124,35 +127,16 @@ public class MyResourceProvider implements RealmResourceProvider {
 
 
 	private void addRequiredUserAction(String username){
-		String keycloakServerUrl = System.getenv("KEYCLOAK_SERVER_URL");
-		String realm = System.getenv("KEYCLOAK_REALM");
-		String clientId = System.getenv("KEYCLOAK_CLIENT_ID");
-		String clientSecret = System.getenv("KEYCLOAK_CLIENT_SECRET");
-		String adminUsername = System.getenv("admin_username");
-		String adminPassword = System.getenv("admin_password");
-
-		Keycloak keycloak = KeycloakBuilder.builder()
-			.serverUrl(keycloakServerUrl)
-			.realm(realm)
-			.username(adminUsername)
-			.password(adminPassword)
-			.clientId("admin-cli")
-			.build();
-
-		try {
-			UserRepresentation user = keycloak.realm(realm)
-				.users()
-				.search(username)
-				.get(0);
-			
-			user.setRequiredActions(Collections.singletonList("webauthn-register-passwordless"));
-
-			keycloak.realm(realm).users().get(user.getId()).update(user);
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			keycloak.close();
-		}	
+		RealmModel realm = session.getContext().getRealm();
+		System.out.println("UserName: " + username);
+		System.out.println("Realm: " + realm);
+		UserModel user = session.users().getUserByUsername(realm, username);
+		System.out.println("User: " + user);
+		if (user != null) {
+			user.addRequiredAction("webauthn-register-passwordless");
+		} else {
+			throw new WebApplicationException("User not found", Response.Status.NOT_FOUND);
+		}
 	}
 
 
