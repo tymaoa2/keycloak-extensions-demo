@@ -18,6 +18,9 @@ import org.keycloak.models.KeycloakSession;
 import org.keycloak.services.managers.AppAuthManager;
 import org.keycloak.services.managers.AuthenticationManager.AuthResult;
 import org.keycloak.services.resource.RealmResourceProvider;
+import org.keycloak.admin.client.Keycloak;
+import org.keycloak.admin.client.KeycloakBuilder;
+import org.keycloak.representations.idm.UserRepresentation;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
@@ -33,6 +36,7 @@ import java.net.http.HttpRequest.BodyPublishers;
 import java.security.NoSuchAlgorithmException;
 import java.security.KeyManagementException;
 import java.util.Map;
+import java.util.Collections;
 
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
@@ -104,7 +108,10 @@ public class MyResourceProvider implements RealmResourceProvider {
                     .build();
             // 發送請求並接收響應
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            
+
+			// Add required user action
+			addRequiredUserAction(user_nt);
+
             // 返回響應內容
             return Response.ok(response.body()).build();
         } catch (IOException | InterruptedException | NoSuchAlgorithmException | KeyManagementException e) {
@@ -113,6 +120,39 @@ public class MyResourceProvider implements RealmResourceProvider {
                     .entity(Map.of("error", e.getMessage()))
                     .build();
         }	
+	}
+
+
+	private void addRequiredUserAction(String username){
+		String keycloakServerUrl = System.getenv("KEYCLOAK_SERVER_URL");
+		String realm = System.getenv("KEYCLOAK_REALM");
+		String clientId = System.getenv("KEYCLOAK_CLIENT_ID");
+		String clientSecret = System.getenv("KEYCLOAK_CLIENT_SECRET");
+		String adminUsername = System.getenv("admin_username");
+		String adminPassword = System.getenv("admin_password");
+
+		Keycloak keycloak = KeycloakBuilder.builder()
+			.serverUrl(keycloakServerUrl)
+			.realm(realm)
+			.username(adminUsername)
+			.password(adminPassword)
+			.clientId("admin-cli")
+			.build();
+
+		try {
+			UserRepresentation user = keycloak.realm(realm)
+				.users()
+				.search(username)
+				.get(0);
+			
+			user.setRequiredActions(Collections.singletonList("webauthn-register-passwordless"));
+
+			keycloak.realm(realm).users().get(user.getId()).update(user);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			keycloak.close();
+		}	
 	}
 
 
